@@ -1,0 +1,62 @@
+// Text
+@mixin text($color, $fs, $fw) {
+  color: $color;
+  font-size: $fs;
+  font-weight: $fw;
+}
+
+// Button
+@mixin button($color, $fw, $bg-color, $border-color, $bg-color-hover) {
+  color: $color;
+  font-weight: $fw;
+  background-color: $bg-color;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background-color: $bg-color-hover;
+  }
+}
+
+// Position
+@mixin position($position, $top, $left) {
+  position: $position;
+  top: $top;
+  left: $left;
+}
+
+@mixin alignCenter {
+  display: flex;
+  align-items: center;
+}
+
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin sizeImg($w, $h) {
+  width: $w;
+  height: $h;
+}
+
+@mixin buttonMoreInfo($w, $h, $bg_color) {
+  width: $w;
+  height: $h;
+  outline: none;
+
+  background-color: $bg_color;
+  padding: 20px;
+  @include alignCenter;
+  justify-content: center;
+  margin: 5px 0;
+  border: none;
+}
+
+@mixin buttonOrder($w, $h, $bg_color) {
+  outline: none;
+  width: $w;
+  height: $h;
+  background-color: $bg_color;
+}

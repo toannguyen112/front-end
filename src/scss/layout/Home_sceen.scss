@@ -1,0 +1,266 @@
+//header
+
+.header {
+  position: relative;
+  .header_content {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+
+    .header_left {
+      flex: 1;
+
+      .search_container {
+        border-radius: 3.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #757575;
+        color: black;
+        font-size: 10px;
+        padding: 10px;
+        height: 2.625rem;
+        width: 40%;
+        .search_right {
+          display: flex;
+          align-items: center;
+          .input_search {
+            background-color: white;
+            border: none;
+            margin: 0;
+            color: black;
+            font-size: 15px;
+            font-weight: 100;
+          }
+        }
+
+        .icon_search {
+          font-size: 20px;
+          font-weight: 100;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    .header_center {
+      background-image: url("https://luxshopping.vn/images/logo-luxury.png");
+      width: 120px;
+      height: 120px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .header_right {
+      display: flex;
+      flex: 1;
+      font-size: 20px;
+      justify-content: flex-end;
+
+      .header_right_content {
+        .icon_right {
+          cursor: pointer;
+        }
+
+        .icon_user {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .login {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding: 50px;
+    background-color: #fff;
+  }
+  .tab__cart {
+    .overplay {
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      position: fixed;
+      right: 0;
+      padding: 20px;
+    }
+
+    .tab__cart__content {
+      position: fixed;
+      text-align: center;
+      right: 0;
+      padding: 20px;
+      top: 0;
+      bottom: 0;
+      background-color: #ffffff;
+      height: 100%;
+      width: 20%;
+      z-index: 2;
+      .tab_title {
+        color: black;
+        font-size: 15px;
+      }
+      .list_item_cart {
+        .item__cart {
+          cursor: pointer;
+          padding: 10px 0;
+          border-bottom: 1px solid #e2e1dd;
+          .item__cart_des {
+            text-align: left;
+          }
+        }
+      }
+
+      .order {
+        padding: 30px 0;
+        .text_sum {
+          font-size: 15px;
+          font-weight: bold;
+        }
+        .button_order {
+          background-color: #f9b949;
+          padding: 15px;
+          color: black;
+          font-weight: 500;
+          margin: 10px 0;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+//navbar
+.nav {
+  .nav_content {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #e5e5e5;
+
+    .list_item {
+      display: flex;
+      margin: 0;
+
+      .item {
+        position: relative;
+        border-bottom: 1px solid white;
+        padding: 20px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+// carousel
+.carousel {
+  position: relative;
+
+  video {
+    width: 100%;
+    height: 100%;
+  }
+
+  .overPlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .overPlay__content {
+      text-align: center;
+
+      .intro_name {
+        color: white;
+
+        font-size: 3em;
+      }
+
+      .intro_des {
+        font-size: 2rem;
+        color: white;
+        font-weight: 100;
+      }
+    }
+  }
+}
+
+// collection
+.collection {
+  background-color: #f6f6f6;
+  padding: 50px 0;
+
+  .collection_name {
+    text-align: center;
+
+    .day {
+      border-bottom: 1px solid #757575;
+    }
+  }
+}
+
+// famousBrand
+
+.famousBrand {
+  padding: 40px 0;
+
+  .famousBrand__text {
+    padding: 20px 0;
+  }
+}
+
+.footer {
+  padding: 20px 0;
+  background-color: #212121;
+
+  color: rgb(212, 212, 212);
+
+  .footer_name__list {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer_list {
+    .footer_list_item {
+      margin: 10px 0;
+
+      &:hover {
+        color: yellow;
+        transition: fill 0.2s ease 0s, color 0.2s ease 0s;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    .header_content {
+      .header_right {
+        display: none;
+      }
+    }
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .famousBrand {
+    padding: 40px 0;
+
+    .famousBrand__logo__image {
+      margin: 10px 0;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,124 @@
+.Admin_home_container {
+  //header
+  .header {
+    background-color: #ffeb3b;
+    color: white;
+    height: 60px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+
+    .header_left {
+      .intro {
+        font-size: 20px;
+      }
+    }
+    .header_right {
+      display: flex;
+      justify-content: flex-end;
+      .list_icon {
+        list-style: none;
+        padding: 0;
+        .icon_cotent {
+          i {
+            color: white;
+            list-style: none;
+          }
+        }
+      }
+    }
+    // search
+    .search__container {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      .search_right {
+        i {
+          color: black;
+        }
+        .input_search {
+          border: none;
+          margin-left: 10px;
+          background-color: #fff;
+          color: black;
+        }
+      }
+    }
+  }
+
+  // body
+  .Admin_body {
+    display: flex;
+    .Admin_body_left {
+      background-color: #fff;
+      position: fixed;
+      width: 20%;
+      z-index: 1;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      height: calc(100vh - 60px);
+      .user_info {
+        background-image: url("https://gurayyarar.github.io/AdminBSBMaterialDesign/images/user-img-background.jpg");
+        height: 135px;
+        background-size: cover;
+        color: white;
+        padding: 20px;
+        .user_avatar_image {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          margin-bottom: 10px;
+        }
+        .user_email {
+          font-size: 10px;
+        }
+      }
+      .navigation {
+        .list_navigaion {
+          list-style: none;
+          padding: 0;
+          .list_navigaion_item {
+            display: flex;
+            align-items: center;
+            padding: 20px 0 0 20px;
+            cursor: pointer;
+            margin: 10px 0;
+
+            i {
+              font-size: 20px;
+              margin-right: 10px;
+              color: #747474;
+            }
+            .list_navigaion_item_name {
+              margin: 0;
+              color: black;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-top: 1px solid #eee;
+        color: black;
+        padding: 20px;
+        font-size: 12px;
+      }
+    }
+    .Admin_body_right {
+      padding: 10px;
+      width: 80%;
+      margin: 22px 15px 0 315px;
+    }
+  }
+}
