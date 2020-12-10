@@ -1,11 +1,28 @@
 import React from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import allActions from "../redux/action/index";
+import axios from "axios";
+export default function Login({ closeLogin }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    const submitLogin = async (event) => {
+        event.preventDefault();
+        const loginUser = {
+            email: "nguyencongtoana1nhvt@gmail.com",
+            password: "1234567",
+        };
+        const user = await axios.post(
+            "http://api-ban-hang.herokuapp.com/costomer/dangnhap",
+            loginUser
+        );
 
-export default function Login() {
+        closeLogin();
+        dispatch(allActions.userActions.setUser(user.data));
+    };
     return (
-        <div
-            className="login"
-
-        >
+        <div className="login">
             <div className="login_content">
                 <div className="container">
                     <div className="row">
@@ -15,7 +32,7 @@ export default function Login() {
                                 Vui lòng nhập email và mật khẩu của bạn để truy cập tài khoản và
                                 sở thích mua sắm của bạn.
               </p>
-                            <form>
+                            <form onSubmit={submitLogin}>
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Email address</label>
                                     <input
@@ -24,6 +41,9 @@ export default function Login() {
                                         id="exampleInputEmail1"
                                         aria-describedby="emailHelp"
                                         placeholder="Enter email"
+                                        value={email}
+                                        name="email"
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -33,6 +53,9 @@ export default function Login() {
                                         className="form-control"
                                         id="exampleInputPassword1"
                                         placeholder="Password"
+                                        value={password}
+                                        name="password"
+                                        onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
 
@@ -53,7 +76,9 @@ export default function Login() {
                                 </li>
                                 <li className="list_icon_social__login">
                                     <i className="fad fa-heart"></i>
-                                    <span className=" ml-3 icon_text">Tạo một danh sách mong muốn</span>
+                                    <span className=" ml-3 icon_text">
+                                        Tạo một danh sách mong muốn
+                  </span>
                                 </li>
                                 <li className="list_icon_social__login">
                                     <i className="fad fa-envelope"></i>

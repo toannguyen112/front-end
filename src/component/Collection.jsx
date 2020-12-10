@@ -1,26 +1,24 @@
-import React from 'react'
+import React from "react";
 import OwlCarousel from "react-owl-carousel";
-import { Link } from "react-router-dom";
-import ProductItem from './ProductItem';
-export default function Collection() {
+
+import ProductItem from "./ProductItem";
+export default function Collection({ products }) {
+    console.log(products);
+
     return (
         <div className="collection">
             <div className="container">
                 <div className="collection_name">
                     <span className="day">09</span>
-                    <p className="month" >
-                        NOVEMBER
-                    </p>
-                    <h3 className="name_section" >
-                        Nam</h3>
+                    <p className="month">NOVEMBER</p>
+                    <h3 className="name_section">Nam</h3>
                 </div>
-                <OwlCarousel className="owl-theme" loop margin={10} nav items={4}>
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
+                <OwlCarousel className="owl-theme" loop margin={10} items={4} >
+                    {products.map((productitem, index) => {
+                        return <ProductItem key={index} productitem={productitem} />;
+                    })}
                 </OwlCarousel>
             </div>
         </div>
-    )
+    );
 }

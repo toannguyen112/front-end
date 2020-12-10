@@ -15,9 +15,11 @@ export default function Admin_login_screen() {
 
     const submit = async (e) => {
         e.preventDefault();
+
+
         const data = {
-            email: "toanadmin@gmail.com",
-            password: "123456789",
+            email: email,
+            password: password,
         };
         const result = await Axios.post(
             "https://api-ban-hang.herokuapp.com/admin/dangnhap",
@@ -29,7 +31,6 @@ export default function Admin_login_screen() {
         console.log("Đăng nhập thành công");
         dispatch(allActions.userActions.setUser(result.data));
         history.push("/admin/home");
-
     };
     return (
         <div className="admin_login_container">
@@ -37,9 +38,7 @@ export default function Admin_login_screen() {
                 <div className="row">
                     <div className="col-lg-3 col-md-2" />
                     <div className="col-lg-6 col-md-8 login-box">
-                        <div className="col-lg-12 login-key">
-                            <i className="fa fa-key" aria-hidden="true" />
-                        </div>
+
                         <div className="col-lg-12 login-title">ADMIN PANEL</div>
                         <div className="col-lg-12 login-form">
                             <div className="col-lg-12 login-form">
@@ -65,7 +64,7 @@ export default function Admin_login_screen() {
                                         <div className="col-lg-6 login-btm login-button">
                                             <button type="submit" className="btn btn-outline-primary">
                                                 LOGIN
-                      </button>
+                                                </button>
                                         </div>
                                     </div>
                                 </form>

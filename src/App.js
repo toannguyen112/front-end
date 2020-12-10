@@ -1,26 +1,54 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Admin_login_screen from './admin/Admin_login_screen'
-import Admin_home_screen from './admin/Admin_home_screen';
-import HomePage from './screens/HomePage';
+import { useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  BrowserRouter,
+} from "react-router-dom";
 
-
-import './scss/main.scss';
-import 'antd/dist/antd.css';
-import DetailPage from './screens/DetailPage';
+import "./scss/main.scss";
+import "antd/dist/antd.css";
+import allActions from "./redux/action";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import routes from "./routes/routes";
 function App() {
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  const dispatch = useDispatch();
+  const getProduct = async () => {
+    const res = await axios.get("https://api-ban-hang.herokuapp.com/products");
+    dispatch(allActions.productsAction.setProducts(res.data));
+  };
+
+  const showRoutes = (routes) => {
+    let result = null;
+    if (routes.length > 0) {
+      result = routes.map((route, index) => {
+        return (
+          <Route
+            key={index}
+            path={route.path}
+            exact={route.exact}
+            component={route.main}
+          />
+        );
+      });
+    }
+
+    return result;
+  };
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/detail" component={DetailPage} />
-          <Route path="/admin/login" component={Admin_login_screen} />
-          <Route path="/admin/home" component={Admin_home_screen} />
-          <Route path="/" component={HomePage} />
-
+          <BrowserRouter>
+            <Switch>{showRoutes(routes)}</Switch>
+          </BrowserRouter>
         </Switch>
       </Router>
-
-
     </div>
   );
 }

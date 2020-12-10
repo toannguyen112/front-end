@@ -17,7 +17,7 @@ export default function ViewdProducts() {
                             </div>
                             <div className="col-md-2">
                                 <div className="ViewdProducts__content__list__item">
-                                    <img className="ViewdProducts__content__list__item__img img-fluid" src="https://luxshopping.vn/Uploads/_Temp_/UploadsNewshublot-big-bang-tutti-frutti-watch-41mmjpg_540_660.jpg" alt="" />
+                                    <img className="ViewdProducts__content__list__item__img img-fluid" src="https://24kara.com/files/sanpham/4983/1/jpg/dong-ho-rolex-submarinerdate-automatic-116613lb.jpg" alt="" />
                                 </div>
                             </div>
 

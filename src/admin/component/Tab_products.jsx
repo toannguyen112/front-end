@@ -1,16 +1,15 @@
 import React, { Fragment, useState, useReducer, useEffect } from "react";
-import { Modal, Button, Input } from "antd";
+import { Modal, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Axios from "axios";
 import allActions from "../../redux/action";
-const { TextArea } = Input;
 
-const user = JSON.parse(localStorage.getItem("currentUser"));
+let user = JSON.parse(localStorage.getItem("currentUser"));
 export default function Tab_products() {
     const [visible, setVisible] = useState(false);
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products);
-
+    const [list_product, setList_product] = useState([]);
     const [userInput, setUserInput] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
         {
@@ -21,6 +20,7 @@ export default function Tab_products() {
             categories: "",
             rate: "",
             status: "",
+
             hidden: true,
             discount: "",
         }
@@ -32,6 +32,7 @@ export default function Tab_products() {
         setUserInput({ [name]: value });
     };
     const addNew = async () => {
+        console.log("add");
         setVisible(false);
 
         const result = await Axios.post(
@@ -89,7 +90,7 @@ export default function Tab_products() {
                     <div className="row">
                         <div className="col-6">
                             <div className="name">
-                                <h6>Name</h6>
+                                <h6>Tên Sản Phẩm</h6>
                                 <input
                                     name="name"
                                     value={userInput.name}
@@ -97,7 +98,7 @@ export default function Tab_products() {
                                 />
                             </div>
                             <div className="price">
-                                <h6>Price</h6>
+                                <h6>Giá</h6>
                                 <input
                                     name="price"
                                     value={userInput.price}
@@ -105,7 +106,7 @@ export default function Tab_products() {
                                 />
                             </div>
                             <div className="categories">
-                                <h6>categories</h6>
+                                <h6>Thể Loại</h6>
                                 <input
                                     name="categories"
                                     value={userInput.categories}
@@ -113,7 +114,7 @@ export default function Tab_products() {
                                 />
                             </div>
                             <div className="rate">
-                                <h6>rate</h6>
+                                <h6>Đánh giá</h6>
                                 <input
                                     name="rate"
                                     value={userInput.rate}
@@ -123,7 +124,7 @@ export default function Tab_products() {
                         </div>
                         <div className="col-6">
                             <div className="image">
-                                <h6>Image</h6>
+                                <h6>Ảnh đại diện</h6>
                                 <input
                                     name="image"
                                     value={userInput.image}
@@ -131,7 +132,7 @@ export default function Tab_products() {
                                 />
                             </div>
                             <div className="status">
-                                <h6>status</h6>
+                                <h6>Trạng thái</h6>
                                 <input
                                     name="status"
                                     value={userInput.status}
@@ -139,7 +140,7 @@ export default function Tab_products() {
                                 />
                             </div>
                             <div className="discount">
-                                <h6>discount</h6>
+                                <h6>Giảm giá</h6>
                                 <input
                                     name="discount"
                                     value={userInput.discount}
@@ -147,7 +148,7 @@ export default function Tab_products() {
                                 />
                             </div>
                             <div className="des">
-                                <h6>Description</h6>
+                                <h6>Miêu Tả</h6>
                                 <textarea
                                     maxLength={100}
                                     name="description"
@@ -165,26 +166,27 @@ export default function Tab_products() {
                 danger
                 onClick={() => handleDeleteAll()}
             >
-                Delete All
+                Xóa tất cả
       </Button>
             <Fragment>
                 {!products.length ? (
-                    <div className="noHavingProduct text-center ">No Having Products</div>
+                    <div className="noHavingProduct text-center ">
+                        Không có sản phẩm nào
+                    </div>
                 ) : (
                         <Fragment>
-                            <h2>Products</h2>
+                            <h2>Sản Phẩm</h2>
                             <table className="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Category</th>
+                                        <th scope="col">Tên Sản Phẩm</th>
+                                        <th scope="col">Hình ảnh</th>
+                                        <th scope="col">Thể Loại</th>
 
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -193,11 +195,6 @@ export default function Tab_products() {
                                             <tr key={prod._id}>
                                                 <th scope="row"> {index + 1} </th>
                                                 <td> {prod.name} </td>
-                                                <td> {prod.description} </td>
-                                                <td> {prod.price} </td>
-                                                <td> {prod.categories} </td>
-
-                                                <td>{prod.status}</td>
                                                 <td>
                                                     <img
                                                         style={{ width: "50px", height: "50px" }}
@@ -205,20 +202,29 @@ export default function Tab_products() {
                                                         alt=""
                                                     />
                                                 </td>
+
+                                                <td> {prod.categories} </td>
+
+                                                <td> {prod.price} </td>
+                                                <td>{prod.status}</td>
+
                                                 <td>
                                                     <Button
                                                         danger
                                                         danger
                                                         onClick={() => handleDelete(prod._id)}
                                                     >
-                                                        Delete
+                                                        Xóa
                         </Button>
                                                     <Button
                                                         primary
                                                         className="ml-2"
                                                         onClick={() => handleUpadte(prod._id)}
                                                     >
-                                                        Update
+                                                        Cập nhật
+                        </Button>
+                                                    <Button primary className="ml-2">
+                                                        Xem chi tiết
                         </Button>
                                                 </td>
                                             </tr>
