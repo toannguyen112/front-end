@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
+import Related_Item from "./Related_Item";
 const styleImage = {
     display: "flex",
     alignItems: "center",
@@ -25,9 +27,18 @@ export default function TabCart({ closeTab }) {
                     <ul className="list_item_cart">{showCartItem()}</ul>
                     <div className="order">
                         <div className="text_sum">TỔNG CỘNG: € 590,00</div>
-                        <div className="button_order">Tiếp tục với đơn đặt hàng</div>
+                        <Link to="/order">
+                            <div className="button_order">Tiếp tục với đơn đặt hàng</div>
+                        </Link>
                         <p className="order_view">Hoặc xem qua giỏ hàng của bạn</p>
                     </div>
+                    <ul className="list_item_cart" style={maxHeight}>
+                        <Related_Item />
+                        <Related_Item />
+                        <Related_Item />
+                        <Related_Item />
+                        <Related_Item />
+                    </ul>
                 </div>
             ) : (
                     <div className="tab__cart__content ">
@@ -43,3 +54,9 @@ export default function TabCart({ closeTab }) {
         </div>
     );
 }
+
+const maxHeight = {
+    maxHeight: "50%",
+    overflowY: "scroll",
+    overflowX: "hidden",
+};

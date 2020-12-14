@@ -1,15 +1,18 @@
-import React, { Fragment, useState, useReducer, useEffect } from "react";
-import { Modal, Button } from "antd";
+import React, { useState, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Axios from "axios";
 import allActions from "../../redux/action";
+import { Table, Space, Switch, Modal, Button, Input, Upload, message } from "antd";
+import { DeleteOutlined, AppstoreAddOutlined, UploadOutlined } from "@ant-design/icons";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 let user = JSON.parse(localStorage.getItem("currentUser"));
 export default function Tab_products() {
     const [visible, setVisible] = useState(false);
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products);
-    const [list_product, setList_product] = useState([]);
+    const [visibleModal, setVisibleModal] = useState(false);
     const [userInput, setUserInput] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
         {
@@ -25,6 +28,76 @@ export default function Tab_products() {
             discount: "",
         }
     );
+    const columns = [
+        {
+            title: "Tên Sản phẩm",
+            dataIndex: "name",
+            key: "name",
+            render: (text) => <span>{text}</span>,
+        },
+        {
+            title: "Hình ảnh",
+            dataIndex: "image",
+            key: "image",
+            render: (text) => (
+                <img style={{ width: "50px", height: "50px" }} src={text} alt="" />
+            ),
+        },
+        {
+            title: "Thể loại",
+            dataIndex: "categories",
+            key: "categories",
+        },
+        {
+            title: "Ẩn/Hiện ",
+            dataIndex: "hidden",
+            key: "hidden",
+            render: () => <Switch defaultChecked onChange={onChange} />,
+        },
+        {
+            title: "Giá (VND)",
+            dataIndex: "price",
+            key: "price",
+            render: (text) => <span>{text}</span>,
+        },
+        {
+            title: "Trạng thái",
+            key: "status",
+            dataIndex: "status",
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: "Thao tác",
+            key: "action",
+            render: (text, prod) => (
+                <Space size="middle">
+                    <Button onClick={() => handleUpadte(prod._id)}>Cập nhật</Button>
+                    <Button danger onClick={() => handleDelete(prod._id)}>
+                        Xóa
+          </Button>
+                    <Button type="primary" onClick={() => setVisibleModal(true)}>
+                        Xem chi tiết
+          </Button>
+                    <Modal
+                        title="Xem chi tiết"
+                        centered
+                        visible={visibleModal}
+                        onOk={() => setVisibleModal(false)}
+                        onCancel={() => setVisibleModal(false)}
+                        width={1000}
+                    >
+                        <p>Name : {prod.name} </p>
+                        <p>Hình ảnh : {prod.image}</p>
+                        <p>Giá : {prod.price}</p>
+                        <p>Trạng thái : {prod.status}</p>
+                    </Modal>
+                </Space>
+            ),
+        },
+    ];
+    const onChange = (checked) => {
+        console.log(`switch to ${checked}`);
+    };
 
     const handleChange = (evt) => {
         const { name, value } = evt.target;
@@ -32,7 +105,6 @@ export default function Tab_products() {
         setUserInput({ [name]: value });
     };
     const addNew = async () => {
-        console.log("add");
         setVisible(false);
 
         const result = await Axios.post(
@@ -49,6 +121,7 @@ export default function Tab_products() {
     };
 
     const handleDelete = async (id) => {
+        console.log(id);
         const result = await Axios.delete(
             `https://api-ban-hang.herokuapp.com/products/${id}`,
             {
@@ -70,16 +143,20 @@ export default function Tab_products() {
         dispatch(allActions.productsAction.deleteAllProducts());
     };
     const handleUpadte = (id) => {
-        console.log(id);
+        console.log("update");
     };
     return (
         <div className="tab_products">
-            <Button type="primary" onClick={() => setVisible(true)}>
-                New Product
+            <Button
+                type="primary"
+                onClick={() => setVisible(true)}
+                icon={<AppstoreAddOutlined />}
+            >
+                Thêm Sản Phẩm
       </Button>
 
             <Modal
-                title=" New Product"
+                title="Thêm sản phẩm"
                 centered
                 visible={visible}
                 onOk={() => addNew()}
@@ -90,32 +167,40 @@ export default function Tab_products() {
                     <div className="row">
                         <div className="col-6">
                             <div className="name">
-                                <h6>Tên Sản Phẩm</h6>
-                                <input
+                                <p>Tên Sản Phẩm</p>
+
+                                <Input
+                                    placeholder="Tên sản phẩm"
                                     name="name"
                                     value={userInput.name}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="price">
-                                <h6>Giá</h6>
-                                <input
+                                <p>Giá</p>
+
+                                <Input
+                                    placeholder="Giá"
                                     name="price"
                                     value={userInput.price}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="categories">
-                                <h6>Thể Loại</h6>
-                                <input
+                                <p>Thể Loại</p>
+
+                                <Input
+                                    placeholder="Giá"
                                     name="categories"
                                     value={userInput.categories}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="rate">
-                                <h6>Đánh giá</h6>
-                                <input
+                                <p>Đánh giá</p>
+
+                                <Input
+                                    placeholder="Đánh giá"
                                     name="rate"
                                     value={userInput.rate}
                                     onChange={handleChange}
@@ -124,31 +209,38 @@ export default function Tab_products() {
                         </div>
                         <div className="col-6">
                             <div className="image">
-                                <h6>Ảnh đại diện</h6>
-                                <input
+                                <p>Ảnh đại diện</p>
+
+                                <Input
+                                    type="file"
+                                    placeholder="Ảnh đại diện"
                                     name="image"
                                     value={userInput.image}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="status">
-                                <h6>Trạng thái</h6>
-                                <input
+                                <p>Trạng thái</p>
+
+                                <Input
+                                    placeholder="Giá"
                                     name="status"
                                     value={userInput.status}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="discount">
-                                <h6>Giảm giá</h6>
-                                <input
+                                <p>Giảm giá</p>
+
+                                <Input
+                                    placeholder="Giá"
                                     name="discount"
                                     value={userInput.discount}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="des">
-                                <h6>Miêu Tả</h6>
+                                <p>Miêu Tả</p>
                                 <textarea
                                     maxLength={100}
                                     name="description"
@@ -159,16 +251,35 @@ export default function Tab_products() {
                         </div>
                     </div>
                 </div>
+                <CKEditor
+                    editor={ClassicEditor}
+                    data="<p>Hello from CKEditor 5!</p>"
+                    onReady={(editor) => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log("Editor is ready to use!", editor);
+                    }}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        console.log({ event, editor, data });
+                    }}
+                    onBlur={(event, editor) => {
+                        console.log("Blur.", editor);
+                    }}
+                    onFocus={(event, editor) => {
+                        console.log("Focus.", editor);
+                    }}
+                />
             </Modal>
             <Button
                 className="ml-2"
                 type="primary"
                 danger
                 onClick={() => handleDeleteAll()}
+                icon={<DeleteOutlined />}
             >
                 Xóa tất cả
       </Button>
-            <Fragment>
+            {/* <Fragment>
                 {!products.length ? (
                     <div className="noHavingProduct text-center ">
                         Không có sản phẩm nào
@@ -234,7 +345,8 @@ export default function Tab_products() {
                             </table>
                         </Fragment>
                     )}
-            </Fragment>
+            </Fragment> */}
+            <Table columns={columns} dataSource={products} />
         </div>
     );
 }

@@ -6,7 +6,7 @@ export default function CartItem({ product }) {
             <div className="row">
                 <div className="col-4">
                     <div className="item__cart__img">
-                        <img src={product.image} alt="" className="img-fluid" />
+                        <img src={product.product_image} alt="" className="img-fluid" />
                     </div>
                 </div>
                 <div className="col-8">
@@ -18,7 +18,7 @@ export default function CartItem({ product }) {
                             € {product.price}
                         </div>
                         <div className="amount">
-                            Số lượng:  {product.quantity}
+                            Số lượng:  {product.amount}
                         </div>
                     </div>
                 </div>

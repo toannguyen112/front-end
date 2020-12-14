@@ -1,16 +1,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "antd";
-
 import Tab_products from "./component/Tab_products";
 import Tab_orders from "./component/Tab_orders";
 import Tab_users from "./component/Tab_users";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "../redux/action";
+import { Menu, Button } from 'antd';
+import { AppstoreOutlined, MailOutlined, UserOutlined, PieChartOutlined } from '@ant-design/icons';
+import TabChart from "./component/TabChart";
 
+const { SubMenu } = Menu;
 const types = [
+    {
+        txt: "Chart",
+        icon: "fas fa-users",
+    },
 
     {
         txt: "Products",
@@ -24,6 +30,7 @@ const types = [
         txt: "Users",
         icon: "fas fa-users",
     },
+
 ];
 export default function Admin_home_screen() {
     const [toggleSearch, settoggleSearch] = useState(false);
@@ -67,14 +74,19 @@ export default function Admin_home_screen() {
         })
 
 
-    }, [])
+    }, []);
+    const handleClick = e => {
+        console.log('click ', e);
+    };
 
     const showTab = (active) => {
         if (active === types[0]) {
-            return <Tab_products />;
+            return (<TabChart />)
         } else if (active === types[1]) {
-            return <Tab_orders />;
+            return <Tab_products />;
         } else if (active === types[2]) {
+            return <Tab_orders />;
+        } else if (active === types[3]) {
             return <Tab_users />;
         }
     };
@@ -148,6 +160,44 @@ export default function Admin_home_screen() {
 
             <div className="Admin_body">
                 <div className="Admin_body_left">
+                    <Menu
+                        onClick={handleClick}
+                        style={{ width: "100%" }}
+                        defaultSelectedKeys={['0']}
+                        mode="inline"
+                    >
+                        <Menu.Item icon={<PieChartOutlined />} onClick={() => setactive(types[0])} >Đồ thị</Menu.Item>
+                        <SubMenu key="sub1" icon={<MailOutlined />} title="Tổng quan" >
+
+                            <Menu.Item onClick={() => setactive(types[1])} >Sản phẩm</Menu.Item>
+                            <Menu.Item onClick={() => setactive(types[2])} >Đơn hàng</Menu.Item>
+                            <Menu.Item onClick={() => setactive(types[3])} >Tài khoản Khách hàng</Menu.Item>
+
+
+                        </SubMenu>
+                        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Đơn Hàng">
+                            <Menu.Item key="5">Option 5</Menu.Item>
+
+                        </SubMenu>
+                        <SubMenu key="sub4" icon={<UserOutlined />} title="Khách hàng">
+                            <Menu.Item key="9">Option 9</Menu.Item>
+
+                        </SubMenu>
+                        <Menu.Item>
+                            <Button danger onClick={() => logOut()} >Đăng xuất</Button>
+                        </Menu.Item>
+                        <div className="footer">
+                            <div className="copyright">
+
+                                <span style={{ color: "#FFEB3B " }}>
+                                    AdminBSB - Material Design.
+                            </span>
+                            </div>
+                        </div>
+                    </Menu>
+                </div>
+
+                {/* <div className="Admin_body_left">
                     <div className="user_info">
                         <div className="user_avatar">
                             <img
@@ -205,7 +255,7 @@ export default function Admin_home_screen() {
                         </div>
                         <div className="version">Version: 1.0.5</div>
                     </div>
-                </div>
+                </div> */}
                 <div className="Admin_body_right">{showTab(active)}</div>
             </div>
         </div>

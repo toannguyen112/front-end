@@ -5,13 +5,12 @@ import React, { useEffect, useState } from 'react'
 
 export default function Tab_users() {
 
-    const [listCostomer, setListCostomer] = useState([])
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-    const dispatch = useDispatch();
-    const costomers = useSelector(state => state.costomers)
+    const costomers = useSelector(state => state.costomers);
+    const handleDeleteUser = async () => {
+        console.log("xoa nguoi dung");
+    }
     return (
         <div className="tab_users" >
-            <h2>Users</h2>
             <table className="table">
                 <thead>
                     <tr>
@@ -34,7 +33,7 @@ export default function Tab_users() {
                                     <td> {Date(data.createdAt)} </td>
                                     <td> {Date(data.updatedAt)} </td>
                                     <td>
-                                        <Button danger >Delete</Button>
+                                        <Button danger onClick={handleDeleteUser} >Delete</Button>
                                     </td>
                                 </tr>
                             )

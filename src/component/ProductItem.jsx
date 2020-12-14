@@ -1,12 +1,12 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function ProductItem({ productitem }) {
     return (
         <div className="item" style={{ textAlign: "center" }}>
-            <img src={productitem.image} alt="" />
+            <img style={{ height: "18em" }} className="img-fluid" src={productitem.image} alt="" />
             <div className="detail" style={{ padding: "20px" }}>
-                <h4 className="product_name">{productitem.name}</h4>
+                <p className="product_name">{productitem.name}</p>
                 <p className="price">€ {productitem.price}</p>
                 <p className="status">{productitem.status}</p>
                 <Link replace={false}

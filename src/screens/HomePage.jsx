@@ -32,8 +32,10 @@ export default function HomePage() {
             <Carousel />
             {loading ? (
                 <Fragment>
-                    <Collection products={listProductsRedux} />
-                    <Collection products={listProductsRedux} />
+                    <Collection title="IPhone" products={listProductsRedux} />
+                    <Collection title="Mac" products={listProductsRedux} />
+                    <Collection title="IPad" products={listProductsRedux} />
+
                 </Fragment>
             ) : (
                     <Loading />

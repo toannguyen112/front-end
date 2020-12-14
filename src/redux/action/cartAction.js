@@ -11,8 +11,16 @@ const deleteAllCart = () => {
     }
 }
 
+const setCartCostomer = (listproduct) => {
+    return {
+        type: "SET_CART_COSTOMER",
+        payload: listproduct
+    }
+}
+
 export default {
     addCart,
-    deleteAllCart
+    deleteAllCart,
+    setCartCostomer
 
 }

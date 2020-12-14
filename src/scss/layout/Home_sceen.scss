@@ -43,8 +43,8 @@
     }
 
     .header_center {
-      background-image: url("https://luxshopping.vn/images/logo-luxury.png");
-      width: 120px;
+      background-image: url("https://pngimage.net/wp-content/uploads/2019/05/phone-logo-png-image-3.png");
+      width: 300px;
       height: 120px;
       background-repeat: no-repeat;
       background-size: cover;
@@ -80,8 +80,18 @@
           position: relative;
           .numberCart {
             position: absolute;
-            right: 0px;
-            top: -12px;
+            left: 50%;
+            top: 0;
+            border-radius: 100%;
+            width: 15px;
+            height: 15px;
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+            background-color: #f9b949;
           }
         }
 
@@ -159,6 +169,8 @@
 
 //navbar
 .nav {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
   .nav_content {
     display: flex;
     justify-content: center;
@@ -169,9 +181,9 @@
 
       .item {
         position: relative;
-        border-bottom: 1px solid white;
         padding: 20px;
         text-transform: uppercase;
+        cursor: pointer;
       }
     }
   }

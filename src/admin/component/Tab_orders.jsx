@@ -1,41 +1,107 @@
 import { Button } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import allActions from "../../redux/action";
-
+import { Table, Tag, Space } from "antd";
+import Moment from "react-moment";
 export default function Tab_orders() {
-
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const dispatch = useDispatch();
-    const orders = useSelector(state => state.orders);
+    const orders = useSelector((state) => state.orders);
+    console.log(orders);
+    const columns = [
+        {
+            title: "Khách hàng",
+            dataIndex: "name_costomer_order",
+            key: "name_costomer_order",
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: "Sản phẩm",
+            dataIndex: "list_product",
+            key: "list_product",
+            render: (list_product) =>
+                list_product.map((prod, index) => {
+                    return (
+                        <div>
+                            <img src={prod.product_image} style={{ width: "50px" }} />
+                            <p>{prod.name}</p>
+                        </div>
+                    );
+                }),
+        },
 
+        {
+            title: "Địa chỉ",
+            dataIndex: "address",
+            key: "address",
+        },
+        {
+            title: "Thanh toán",
+            dataIndex: "payment",
+            key: "payment",
+        },
+        {
+            title: "Ngày khách đặt hàng",
+            dataIndex: "createdAt",
+            key: "createdAt",
+            render: (text) => <Moment format="YYYY/MM/DD">{text}</Moment>,
+        },
+
+        {
+            title: "Trạng thái",
+            dataIndex: "active",
+            key: "active",
+            render: (text) => <span> {text ? "Đã xác nhận" : "Chờ xác nhận"} </span>
+        },
+
+
+        {
+            title: "Thao tác",
+            key: "action",
+            render: (text, order) => (
+                <Space size="middle">
+                    <Button>Xem chi tiết</Button>
+                    {!order.active ? <Button onClick={() => handleConfirmOrder(order._id)} >Xác nhận đơn hàng</Button> : ""}
+                    <Button danger onClick={() => handleCancleOrder(order._id)} >Hủy Đơn Hàng</Button>
+                </Space>
+            ),
+        },
+    ];
 
     const handleCancleOrder = async (id) => {
-        const result = await Axios.delete(`https://api-ban-hang.herokuapp.com/order/${id}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + user.token,
-            },
-        });
+        const result = await Axios.delete(
+            `https://api-ban-hang.herokuapp.com/order/${id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + user.token,
+                },
+            }
+        );
         dispatch(allActions.orderAction.deleteOrder(result.data._id));
-    }
+    };
     const handleConfirmOrder = async (id) => {
         const data = {
-            active: true
-        }
-        const result = await Axios.put(`https://api-ban-hang.herokuapp.com/order/${id}`, data, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + user.token,
-            },
-        });
+            active: true,
+        };
+        const result = await Axios.put(
+            `https://api-ban-hang.herokuapp.com/order/${id}`,
+            data,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + user.token,
+                },
+            }
+        );
         dispatch(allActions.orderAction.confirmOrder(result.data._id));
-    }
+    };
     return (
         <div className="tab_orders">
-            <h2>Orders</h2>
-            <table className="table">
+            <Table columns={columns} dataSource={orders} />
+            {/* <table className="table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -76,7 +142,7 @@ export default function Tab_orders() {
                         );
                     })}
                 </tbody>
-            </table>
+            </table> */}
         </div>
     );
 }

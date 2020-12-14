@@ -1,11 +1,23 @@
 import Axios from "axios";
-import { useState } from "react";
+import { React, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import allActions from "../redux/action/index";
-import React from "react";
-
-import "./css/Admin_login_screen.css";
+import { Form, Input, Button, Checkbox } from "antd";
+const layout = {
+    labelCol: {
+        span: 8,
+    },
+    wrapperCol: {
+        span: 16,
+    },
+};
+const tailLayout = {
+    wrapperCol: {
+        offset: 8,
+        span: 16,
+    },
+};
 export default function Admin_login_screen() {
     let history = useHistory();
     const [email, setEmail] = useState("");
@@ -13,10 +25,7 @@ export default function Admin_login_screen() {
     const currentUser = useSelector((state) => state.currentUser);
     const dispatch = useDispatch();
 
-    const submit = async (e) => {
-        e.preventDefault();
-
-
+    const onFinish = async () => {
         const data = {
             email: email,
             password: password,
@@ -32,46 +41,52 @@ export default function Admin_login_screen() {
         dispatch(allActions.userActions.setUser(result.data));
         history.push("/admin/home");
     };
+
+    const onFinishFailed = (errorInfo) => {
+        console.log("Failed:", errorInfo);
+    };
     return (
         <div className="admin_login_container">
             <div className="container">
-                <div className="row">
-                    <div className="col-lg-3 col-md-2" />
-                    <div className="col-lg-6 col-md-8 login-box">
+                <div className="row text-center " style={{ justifyContent: "center" }} >
+                    <Form
+                        {...layout}
+                        name="basic"
+                        initialValues={{ remember: true }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                    >
+                        <Form.Item
+                            label="Username"
+                            name="username"
+                            rules={[
+                                { required: true, message: "Please input your username!" },
+                            ]}
+                        >
+                            <Input onChange={(e) => setEmail(e.target.value)} />
+                        </Form.Item>
 
-                        <div className="col-lg-12 login-title">ADMIN PANEL</div>
-                        <div className="col-lg-12 login-form">
-                            <div className="col-lg-12 login-form">
-                                <form onSubmit={submit}>
-                                    <div className="form-group">
-                                        <label className="form-control-label">USERNAME</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            onChange={(e) => setEmail(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-control-label">PASSWORD</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
-                                            onChange={(e) => setPassword(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="col-lg-12 loginbttm">
-                                        <div className="col-lg-6 login-btm login-text"></div>
-                                        <div className="col-lg-6 login-btm login-button">
-                                            <button type="submit" className="btn btn-outline-primary">
-                                                LOGIN
-                                                </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-2" />
-                    </div>
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[
+                                { required: true, message: "Please input your password!" },
+                            ]}
+                        >
+                            <Input.Password onChange={(e) => setPassword(e.target.value)} />
+                        </Form.Item>
+
+                        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                            <Checkbox>Remember me</Checkbox>
+                        </Form.Item>
+
+                        <Form.Item {...tailLayout}>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+              </Button>
+                        </Form.Item>
+                    </Form>
+
                 </div>
             </div>
         </div>

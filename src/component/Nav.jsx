@@ -6,13 +6,13 @@ export default function Nav() {
             <div className="container-fluid">
                 <div className="nav_content">
                     <ul className="list_item">
-                        <li className="item">Thương hiệu</li>
-                        <li className="item">Nam</li>
-                        <li className="item">Nữ</li>
-                        <li className="item">Cặp đôi</li>
-                        <li className="item">Phụ kiện</li>
-                        <li className="item">Dịch vụ</li>
-                        <li className="item">Liên hệ</li>
+                        <li className="item">Mac</li>
+                        <li className="item">Ipad</li>
+                        <li className="item">IPhone</li>
+                        <li className="item">Watch</li>
+                        <li className="item">TV</li>
+                        <li className="item">Music</li>
+                        <li className="item">Support</li>
 
 
                     </ul>

@@ -27,12 +27,10 @@ export default function OrderCheck() {
         );
         setLoading(true);
         setListOrder(res.data);
-        console.log(res.data);
     };
     return (
         <Fragment>
             <Header />
-
 
             <div className="OrderCheck">
                 <div className="OrderCheck__content">
@@ -42,7 +40,7 @@ export default function OrderCheck() {
                                 <table className="table">
                                     <thead>
                                         <tr>
-                                            <th> # </th>
+                                            <th> STT </th>
                                             <th> Sản phẩm</th>
                                             <th>Địa chỉ</th>
                                             <th>Ngày đặt hàng</th>
@@ -73,21 +71,12 @@ export default function OrderCheck() {
                                                         <td> {item.payment}</td>
                                                         <td>
                                                             <Steps current={!item.active ? 1 : 2}>
-                                                                <Step
-                                                                    title="Đã đặt hàng"
-                                                                    description="This is a description."
-                                                                />
-                                                                <Step
-                                                                    title="Đơn hàng đang xử lý"
-                                                                    description="This is a description."
-                                                                />
-                                                                <Step
-                                                                    title="Đơn hàng đang được giao"
-                                                                    description="This is a description."
-                                                                />
+                                                                <Step title="Đã đặt hàng" />
+                                                                <Step title="Đơn hàng đang xử lý" />
+                                                                <Step title="Đơn hàng đang được giao" />
+                                                                <Step title="Đã thanh toán" />
                                                             </Steps>
-                                ,
-                              </td>
+                                                        </td>
                                                     </tr>
                                                 );
                                             })
@@ -95,7 +84,7 @@ export default function OrderCheck() {
                                     </tbody>
                                 </table>
                             ) : (
-                                    <div>
+                                    <div style={centerLoading}>
                                         <Loading />
                                     </div>
                                 )}
@@ -106,3 +95,12 @@ export default function OrderCheck() {
         </Fragment>
     );
 }
+
+const centerLoading = {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    padding: "100px",
+    height: "100%",
+};

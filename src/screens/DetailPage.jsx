@@ -1,17 +1,20 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Header from "../component/Header";
+import Nav from "../component/Nav";
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
+import InnerImageZoom from "react-inner-image-zoom";
 import OwlCarousel from "react-owl-carousel";
 import Footer from "../component/Footer";
 import ViewdProducts from "../component/ViewdProducts";
 import Loading from "../component/loading/Loading";
 
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import Axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../component/ProductItem";
 import allActions from "../redux/action";
 import swal from "sweetalert";
+import { message } from "antd";
 export default function DetailPage() {
   const [productDetail, setproductDetail] = useState({});
   const [loading, setLoading] = useState(true);
@@ -33,18 +36,22 @@ export default function DetailPage() {
     setLoading(true);
   };
 
-  const addToCart = (product) => {
-
+  const addToCart = async (product) => {
     let costomer = JSON.parse(localStorage.getItem("currentUser"));
+    if (!costomer) {
+      return swal({ title: "Yêu cầu đăng nhập" });
+    }
     const tokenCostomer = costomer["token"];
+
     const productCart = {
       _id: product._id,
+      product_image: product.image,
       name: product.name,
       price: product.price,
       description: product.description,
       amount: 1,
     };
-    Axios.post(
+    await Axios.post(
       "https://api-ban-hang.herokuapp.com/cart/addtocart",
       productCart,
       {
@@ -54,16 +61,13 @@ export default function DetailPage() {
         },
       }
     );
+    message.success("Thêm vào giỏ hàng thành công");
     dispatch(allActions.cartAction.addCart(product));
-    swal({
-      title: "Good job!",
-      text: "Thêm thành công",
-      icon: "success",
-    });
   };
   return (
     <div className="DetailPage">
       <Header />
+      <Nav />
       {loading ? (
         <Fragment>
           <div className="DetailPage__content">
@@ -93,10 +97,10 @@ export default function DetailPage() {
                 <div className="col-md-6">
                   <div className="Detail__center">
                     {loading ? (
-                      <img
-                        className="Detail__center__image img-fluid"
+                      <InnerImageZoom
                         src={productDetail.image}
-                        alt=""
+                        zoomScale={3}
+                        zoomType="hover"
                       />
                     ) : (
                         "Loading..."
@@ -107,9 +111,9 @@ export default function DetailPage() {
                   <div className="Detail__right">
                     <div className="Detail__right__logo">
                       <img
-                        src="https://luxshopping.vn/Uploads/Images/luxshoppingvn6-1.png"
+                        src="https://cdn.tgdd.vn/2020/12/banner/380x100-380x100-2.png"
                         alt=""
-                        className="Detail__right__logo__content"
+                        className="Detail__right__logo__content img-fluid "
                       />
                     </div>
                     <div className="Detail__right__des">
@@ -135,33 +139,12 @@ export default function DetailPage() {
                         aria-expanded="false"
                         aria-controls="contentId"
                       >
-                        Thông tin chi tiết
+                        Thông tin số kỹ thuật
                       </button>
                       <div className="collapse" id="contentId">
                         <div className="text-left">
-                          Omega Constellation 12355382152007 Automatic 38mm
-                          DESCRIPTION The especially dramatic and enduring
-                          design concept of the OMEGA Constellation line is
-                          characterized by its famous “Griffes”, or claws, and
-                          striking dials. This model features a sun-brushed
-                          silver dial with diamond-set indexes, a date window at
-                          the 3 o'clock position and a scratch-resistant
-                          sapphire crystal. The bezel, with its diamond-set
-                          Roman numerals, is mounted on a 38 mm 18K red gold
-                          case, and is presented on a matching bracelet. At the
-                          heart of this timepiece is the OMEGA Co-Axial calibre
-                          8501, visible through the transparent caseback.
-                          FEATURES Diamonds Chronometer Date Transparent case
-                          back Bracelet: red gold Between Lugs: 25 mm Case: Red
-                          gold Case Diameter: 38 mm Dial colour: Silver Crystal:
-                          Domed scratch-resistant sapphire crystal with
-                          anti-reflective treatment on both sides Water
-                          resistance: 10 bar (100 metres / 330 feet)
-                          Self-winding movement with Co-Axial escapement. Free
-                          sprung-balance, 2 barrels mounted in series, automatic
-                          winding in both directions. Oscillating mass and
-                          balance bridge in red gold. Luxury finish with
-                          exclusive Geneva waves in arabesque.
+                          {productDetail.description}
+
                         </div>
                       </div>
                     </div>
@@ -236,21 +219,21 @@ export default function DetailPage() {
             <div className="container">
               <h4 className="text-center my-4">SẢN PHẨM TƯƠNG TỰ</h4>
               <div className="row">
-                <div className="col-md-12">
-                  <OwlCarousel
-                    className="owl-theme"
-                    loop
-                    center
-                    margin={10}
-                    nav
-                    autoplay
-                    item={2}
-                  >
-                    {listProductsRedux.map((item, index) => {
-                      return <ProductItem key={index} productitem={item} />;
-                    })}
-                  </OwlCarousel>
-                </div>
+
+                <OwlCarousel
+                  className="owl-theme"
+                  loop
+                  autoplay
+                  items={4}
+                  margin={5}
+
+
+
+                >
+                  {listProductsRedux.map((item, index) => {
+                    return <ProductItem key={index} productitem={item} />;
+                  })}
+                </OwlCarousel>
               </div>
             </div>
           </div>
