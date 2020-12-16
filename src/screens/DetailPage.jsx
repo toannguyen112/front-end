@@ -14,16 +14,49 @@ import Axios from "axios";
 import ProductItem from "../component/ProductItem";
 import allActions from "../redux/action";
 import swal from "sweetalert";
-import { message } from "antd";
+import { message, Comment, Avatar, Form, Button, List, Input } from "antd";
+import moment from "moment";
+
+const { TextArea } = Input;
+
 export default function DetailPage() {
   const [productDetail, setproductDetail] = useState({});
   const [loading, setLoading] = useState(true);
   const [listImageDetail, setListImageDetail] = useState([]);
+
+  const [comments, setComments] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [value, setValue] = useState("");
   const listProductsRedux = useSelector((state) => state.products);
   const dispatch = useDispatch();
   useEffect(() => {
     getDetailProduct();
   }, []);
+  const CommentList = ({ comments }) => (
+    <List
+      dataSource={comments}
+      header={`${comments.length} ${comments.length > 1 ? "replies" : "reply"}`}
+      itemLayout="horizontal"
+      renderItem={(props) => <Comment {...props} />}
+    />
+  );
+  const Editor = ({ onChange, onSubmit, submitting, value }) => (
+    <>
+      <Form.Item>
+        <TextArea rows={4} onChange={onChange} value={value} />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          htmlType="submit"
+          loading={submitting}
+          onClick={onSubmit}
+          type="primary"
+        >
+          Add Comment
+        </Button>
+      </Form.Item>
+    </>
+  );
 
   const getDetailProduct = async () => {
     const id = window.location.href.split("/").reverse()[0];
@@ -64,6 +97,26 @@ export default function DetailPage() {
     message.success("Thêm vào giỏ hàng thành công");
     dispatch(allActions.cartAction.addCart(product));
   };
+  const handleSubmit = () => {
+    setSubmitting(false);
+    setValue("");
+    setComments([
+      ...comments,
+      {
+        author: "Han Solo",
+        avatar:
+          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+        content: <p>{value}</p>,
+        datetime: moment().fromNow(),
+      },
+    ]);
+  };
+
+  const handleChange = (e) => {
+    // setValue(e.targer.value);
+    console.log(e.target.value);
+  };
+
   return (
     <div className="DetailPage">
       <Header />
@@ -144,7 +197,6 @@ export default function DetailPage() {
                       <div className="collapse" id="contentId">
                         <div className="text-left">
                           {productDetail.description}
-
                         </div>
                       </div>
                     </div>
@@ -213,22 +265,35 @@ export default function DetailPage() {
                   </div>
                 </div>
               </div>
+              {comments.length > 0 && <CommentList comments={comments} />}
+              <Comment
+                avatar={
+                  <Avatar
+                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    alt="Han Solo"
+                  />
+                }
+                content={
+                  <Editor
+                    onChange={(e) => setValue(e.target.value)}
+                    onSubmit={() => handleSubmit()}
+                    submitting={submitting}
+                    value={value}
+                  />
+                }
+              />
             </div>
           </div>
           <div className="SimilarProducts" style={{ padding: "50px 0" }}>
             <div className="container">
               <h4 className="text-center my-4">SẢN PHẨM TƯƠNG TỰ</h4>
               <div className="row">
-
                 <OwlCarousel
                   className="owl-theme"
                   loop
                   autoplay
                   items={4}
                   margin={5}
-
-
-
                 >
                   {listProductsRedux.map((item, index) => {
                     return <ProductItem key={index} productitem={item} />;
@@ -242,6 +307,7 @@ export default function DetailPage() {
       ) : (
           <Loading />
         )}
+
       <Footer />
     </div>
   );

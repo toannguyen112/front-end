@@ -1,0 +1,30 @@
+.OrderCheck {
+  .OrderCheck__content {
+    background-color: #eff0f4;
+    min-height: 20em;
+    .order__list {
+      padding: 10px 0;
+      .order_list_item {
+        .order_list_item-header {
+          background-color: #fff;
+          margin-bottom: 10px;
+          padding: 10px 10px;
+          border-radius: 5px;
+          .idOrder {
+            color: blue;
+          }
+        }
+        .order_list_item-body {
+          @extend .order_list_item-header;
+
+          .step {
+            margin: 30px 0;
+          }
+          .order__products {
+            margin: 15px 0;
+          }
+        }
+      }
+    }
+  }
+}

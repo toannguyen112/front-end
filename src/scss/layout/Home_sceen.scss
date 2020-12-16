@@ -43,12 +43,12 @@
     }
 
     .header_center {
-      background-image: url("https://pngimage.net/wp-content/uploads/2019/05/phone-logo-png-image-3.png");
-      width: 300px;
-      height: 120px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 20%;
+      }
     }
 
     .header_right {

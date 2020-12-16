@@ -48,7 +48,7 @@ export default function Admin_login_screen() {
     return (
         <div className="admin_login_container">
             <div className="container">
-                <div className="row text-center " style={{ justifyContent: "center" }} >
+                <div className="row " style={{ margin: "0 auto" }}>
                     <Form
                         {...layout}
                         name="basic"
@@ -86,7 +86,6 @@ export default function Admin_login_screen() {
               </Button>
                         </Form.Item>
                     </Form>
-
                 </div>
             </div>
         </div>

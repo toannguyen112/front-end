@@ -25,7 +25,9 @@ export default function Header() {
         ? true
         : false;
     const userLG = localStorage.getItem("currentUser")
-        ? JSON.parse(localStorage.getItem("currentUser")).costomer.email.charAt(0).toUpperCase()
+        ? JSON.parse(localStorage.getItem("currentUser"))
+            .costomer.email.charAt(0)
+            .toUpperCase()
         : "";
 
     useEffect(() => {
@@ -71,12 +73,17 @@ export default function Header() {
                 },
             }
         );
-        console.log(res.data);
         dispatch(allActions.cartAction.setCartCostomer(res.data));
     };
 
     const closeTab = () => {
-        setShowCart(false);
+        setShowCart(!showCart);
+        document.body.style.overflow = null;
+    };
+
+    const showTabCart = () => {
+        setShowCart(!showCart);
+        document.body.style.overflow = "hidden";
     };
 
     const logOut = async () => {
@@ -117,12 +124,16 @@ export default function Header() {
         } else {
             return (
                 <div className="user_login">
-                    <Dropdown overlay={menu}  >
+                    <Dropdown overlay={menu}>
                         <a
                             className="ant-dropdown-link mr-3"
                             onClick={(e) => e.preventDefault()}
                         >
-                            <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>  {userLG ? userLG : ""} </Avatar> <DownOutlined />
+                            <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+                                {" "}
+                                {userLG ? userLG : ""}{" "}
+                            </Avatar>{" "}
+                            <DownOutlined />
                         </a>
                     </Dropdown>
                 </div>
@@ -146,7 +157,9 @@ export default function Header() {
                         </div>
                     </div>
                     <Link to="/">
-                        <div className="header_center"></div>
+                        <div className="header_center">
+                            <img src="../image/logo.png" alt="" />
+                        </div>
                     </Link>
 
                     <div className="header_right">
@@ -155,7 +168,7 @@ export default function Header() {
                             <div
                                 className="cart"
                                 style={{ cursor: "pointer" }}
-                                onClick={() => setShowCart(!showCart)}
+                                onClick={() => showTabCart()}
                             >
                                 {cart.length > 0 ? (
                                     <span className="numberCart"> {cart.length} </span>
@@ -166,9 +179,12 @@ export default function Header() {
                         </div>
                     </div>
                 </div>
+
+                {/* login  */}
                 {showLogin ? <Login closeLogin={closeLogin} /> : ""}
             </div>
-            {showCart ? <TabCart closeTab={closeTab} /> : ""}
+            {/* TabCart */}
+            <TabCart closeTab={closeTab} showCart={showCart} />
         </header>
     );
 }

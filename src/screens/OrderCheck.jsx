@@ -1,11 +1,13 @@
+import { Fragment } from "react";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Fragment } from "react";
 import Header from "../component/Header";
+import Footer from "../component/Footer";
+import Nav from "../component/Nav";
+
 import Loading from "../component/loading/Loading";
-import { Steps } from "antd";
-import Moment from "react-moment";
-const { Step } = Steps;
+import Order_Checkout_Item from "../component/Order_Checkout_Item";
+
 export default function OrderCheck() {
     const [listOrder, setListOrder] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -25,73 +27,37 @@ export default function OrderCheck() {
                 },
             }
         );
+        console.log(res.data);
         setLoading(true);
         setListOrder(res.data);
     };
     return (
         <Fragment>
             <Header />
+            <Nav />
 
             <div className="OrderCheck">
                 <div className="OrderCheck__content">
-                    <div className="container-fluid">
-                        <div className="row">
-                            {loading ? (
-                                <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <th> STT </th>
-                                            <th> Sản phẩm</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Ngày đặt hàng</th>
-
-                                            <th>Hình thức thanh toán</th>
-                                            <th>Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {listOrder.length > 0
-                                            ? listOrder.map((item, index) => {
-                                                return (
-                                                    <tr key={index}>
-                                                        <td> {index + 1} </td>
-                                                        <td>
-                                                            <ul>
-                                                                {item.list_product.map((prod, index) => {
-                                                                    return <li key={index}> {prod.name} </li>;
-                                                                })}
-                                                            </ul>
-                                                        </td>
-                                                        <td> {item.address}</td>
-                                                        <td>
-                                                            <Moment format="YYYY/MM/DD">
-                                                                {item.createdAt}
-                                                            </Moment>
-                                                        </td>
-                                                        <td> {item.payment}</td>
-                                                        <td>
-                                                            <Steps current={!item.active ? 1 : 2}>
-                                                                <Step title="Đã đặt hàng" />
-                                                                <Step title="Đơn hàng đang xử lý" />
-                                                                <Step title="Đơn hàng đang được giao" />
-                                                                <Step title="Đã thanh toán" />
-                                                            </Steps>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })
-                                            : "Chưa có đơn hàng nào"}
-                                    </tbody>
-                                </table>
-                            ) : (
-                                    <div style={centerLoading}>
-                                        <Loading />
-                                    </div>
-                                )}
-                        </div>
+                    <div className="container">
+                        {loading ? (
+                            <ul className="order__list">
+                                {listOrder.length > 0 ? (
+                                    listOrder.map((order, index) => {
+                                        return <Order_Checkout_Item key={index} order={order} />;
+                                    })
+                                ) : (
+                                        <div className="">Chưa có đơn hàng nào</div>
+                                    )}
+                            </ul>
+                        ) : (
+                                <div style={centerLoading}>
+                                    <Loading />
+                                </div>
+                            )}
                     </div>
                 </div>
             </div>
+            <Footer />
         </Fragment>
     );
 }
